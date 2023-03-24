@@ -2,8 +2,9 @@ import os
 import shutil
 import time
 import PySimpleGUI as sg
+import math
 
-def backup(source_folder, destination_folder):
+def backup(source_folder, destination_folder): # Checks if destination_folder is available and if so, copies from source_folder to destination_folder
     #source_folder = r"C:\Users\mlcra\Desktop\source"
     #destination_folder = r"C:\Users\mlcra\Desktop\destination"
     while True:
@@ -37,30 +38,41 @@ def backup(source_folder, destination_folder):
         else:
             time.sleep(60)
 
+def convert_size(size_bytes): #Convertes Bytes to kB, MB, GB, TB, or PB
+   if size_bytes == 0:
+       return "0B"
+   size_name = ("B", "KB", "MB", "GB", "TB", "PB")
+   i = int(math.floor(math.log(size_bytes, 1024)))
+   p = math.pow(1024, i)
+   s = round(size_bytes / p, 2)
+   return "%s %s" % (s, size_name[i])
+
+def get_size(start_path): #Works together with convert_size() and gives out the size of given path
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(start_path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            if not os.path.islink(fp):
+                total_size += os.path.getsize(fp)
+    return convert_size(total_size)
+
 def display(b1, b2, b3): #display modul with variable amounts of buttons
-    layout = [[sg.Text("Welcher Ordner soll Kopiert werden")], 
-          [sg.Button(b1)],
-          [sg.Button(b2)],
-          [sg.Button(b3)]
-
+    layout = [[sg.Text("Choose Folder to Copy")], 
+          [sg.Button(b1), sg.Text(get_size(r'C:\Users\mlcra\Desktop\source'))],
+          [sg.Button(b2), sg.Text(get_size(r'C:\Users\mlcra\OneDrive - HTL-Rankweil'))],
+          [sg.Button(b3), sg.Text('Quit')]
           ]
-    window = sg.Window("HDD Backup", layout)
-
-
-
+    window = sg.Window("Backup", layout,size=(300, 150))
     while True:
         event, values = window.read()
 
         if event == b1: 
             backup(r"C:\Users\mlcra\Desktop\source", r"C:\Users\mlcra\Desktop\destination")
         if event == b2:
-            ()
+            backup(r"C:\Users\mlcra\OneDrive - HTL-Rankweil", r"C:\Users\mlcra\Desktop\source")
         if event == b3: #quit button
             quit()
-            
-        
-
-        if event == sg.WINDOW_CLOSED: #endet programm
+        if event == sg.WINDOW_CLOSED: #quit on x button
             quit()
 
 def main():
