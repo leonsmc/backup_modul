@@ -1,11 +1,11 @@
 import os
 import shutil
 import time
-#import PySimpleGUI as sg
+import PySimpleGUI as sg
 
-def backup():
-    source_folder = r"C:\Users\mlcra\OneDrive - HTL-Rankweil\HTL-Theorie"
-    destination_folder = r"C:\Users\mlcra\Desktop\goal"
+def backup(source_folder, destination_folder):
+    #source_folder = r"C:\Users\mlcra\Desktop\source"
+    #destination_folder = r"C:\Users\mlcra\Desktop\destination"
     while True:
         if os.path.exists(destination_folder):
             for root, dirs, files in os.walk(source_folder):
@@ -37,4 +37,33 @@ def backup():
         else:
             time.sleep(60)
 
-backup()
+def display(b1, b2, b3): #display modul with variable amounts of buttons
+    layout = [[sg.Text("Welcher Ordner soll Kopiert werden")], 
+          [sg.Button(b1)],
+          [sg.Button(b2)],
+          [sg.Button(b3)]
+
+          ]
+    window = sg.Window("HDD Backup", layout)
+
+
+
+    while True:
+        event, values = window.read()
+
+        if event == b1: 
+            backup(r"C:\Users\mlcra\Desktop\source", r"C:\Users\mlcra\Desktop\destination")
+        if event == b2:
+            ()
+        if event == b3: #quit button
+            quit()
+            
+        
+
+        if event == sg.WINDOW_CLOSED: #endet programm
+            quit()
+
+def main():
+    display("Button1", "Button2", "Quit_Button")
+
+main()
