@@ -5,8 +5,7 @@ import PySimpleGUI as sg
 import math
 
 def backup(source_folder, destination_folder): # Checks if destination_folder is available and if so, copies from source_folder to destination_folder
-    #source_folder = r"C:\Users\mlcra\Desktop\source"
-    #destination_folder = r"C:\Users\mlcra\Desktop\destination"
+    
     while True:
         if os.path.exists(destination_folder):
             for root, dirs, files in os.walk(source_folder):
@@ -67,9 +66,9 @@ def display(b1, b2, b3): #display modul with variable amounts of buttons
         event, values = window.read()
 
         if event == b1: 
-            backup(r"C:\Users\mlcra\Desktop\source", r"C:\Users\mlcra\Desktop\destination")
+            backup(r"C")
         if event == b2:
-            backup(r"C:\Users\mlcra\OneDrive - HTL-Rankweil", r"C:\Users\mlcra\Desktop\source")
+            backup(r"D")
         if event == b3: #quit button
             quit()
         if event == sg.WINDOW_CLOSED: #quit on x button
